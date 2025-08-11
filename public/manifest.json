@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "React Color Picker",
+    "version": "1.0",
+    "description": "Pick pixel colors from the current tab",
+    "permissions": ["tabs", "activeTab", "scripting"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Pick a Color"
+    },
+    "host_permissions": ["<all_urls>"]
+  }
+  
