@@ -2,7 +2,8 @@ import type { RGB, rgbaFormFields } from "../../types/color";
 import { useForm } from "react-hook-form";
 import { useColor } from "../../constants/ColorProvider";
 import { useEffect } from "react";
-import { CopySVG } from "../index";
+import { CopyButton } from "../index";
+import { rgbaToString } from "../../utils/colorUtils";
 
 // Form fields for the RGBA selector
 const rgbaFormFields: rgbaFormFields[] = [
@@ -30,7 +31,7 @@ const RGBASelector = () => {
     // ===============================================
     // State
     // ===============================================
-    const { color, setColor } = useColor();
+    const { color, setColor, theme } = useColor();
 
     // ===============================================
     // Hooks
@@ -85,6 +86,13 @@ const RGBASelector = () => {
         setColor(updatedColor);
     };
 
+    /**
+     * Copy to clipboard
+     */
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(rgbaToString(color));
+    }   
+
     // ===============================================
     // Render
     // ===============================================
@@ -96,7 +104,13 @@ const RGBASelector = () => {
                     <div key={field.name} className="flex flex-col items-center gap-1">
 
                         {/* Label */}
-                        <label htmlFor={field.name} className="text-xs font-medium text-gray-700">
+                        <label 
+                            htmlFor={field.name} 
+                            className="text-xs font-medium"
+                            style={{
+                                color: theme === 'light' ? "var(--color-light-text)" : "var(--color-dark-text)",
+                            }}
+                        >
                             {field.label}
                         </label>
 
@@ -106,7 +120,12 @@ const RGBASelector = () => {
                             id={field.name}
                             min={field.min}
                             max={field.max}
-                            className="text-xs w-14 px-2 py-1 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="text-xs w-14 px-2 py-1 text-center border rounded-md focus:outline-none focus:ring-2 focus:border-transparent focus-ring"
+                            style={{
+                                backgroundColor: theme === 'light' ? "var(--color-light-background)" : "var(--color-dark-background)",
+                                color: theme === 'light' ? "var(--color-light-text)" : "var(--color-dark-text)",
+                                borderColor: theme === 'light' ? "var(--color-light-border)" : "var(--color-dark-border)",
+                            }}
                             {...register(field.name, {
                                 required: `${field.label} is required`,
                                 min: { value: field.min, message: `${field.label} must be at least ${field.min}` },
@@ -124,9 +143,7 @@ const RGBASelector = () => {
                 ))}
 
                 {/* Copy SVG */}
-                <button type="button" className="absolute -right-7 top-4 cursor-pointer hover:bg-gray-100 rounded-md p-0.5">
-                    <CopySVG height="20px" width="20px" />
-                </button>
+                <CopyButton onCopy={copyToClipboard} />
             </div>
         </form>
     );

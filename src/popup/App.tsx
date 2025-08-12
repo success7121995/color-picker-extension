@@ -7,7 +7,7 @@ const App = () => {
 
     return (
         <div
-            className="p-4 min-w-[300px] min-h-[300px]"
+            className="p-4 min-w-[300px] min-h-[300px] transition-all duration-200"
             style={{
                 backgroundColor: rgbaToString(color),
             }}

@@ -1,5 +1,60 @@
 @import "tailwindcss";
 
+/* Custom CSS Variables */
+:root {
+    /* Light Theme */
+    --color-light-background: #FFFFFF;
+    --color-light-text: #000000;
+    --color-light-border: #E0E0E0;
+
+    /* Dark Theme */
+    --color-dark-background: #121212;
+    --color-dark-text: #FFFFFF;
+    --color-dark-border: #262626;
+
+    --font-size-4xs: 4px;
+    --font-size-3xs: 6px;
+    --font-size-2xs: 8px;
+    --font-size-1xs: 10px;
+}
+
+/* Theme Transition */
+* {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Focus Styles */
+.focus-ring {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-light-focus);
+}
+
+.dark .focus-ring {
+    box-shadow: 0 0 0 2px var(--color-dark-focus);
+}
+
+/* Custom Utility Classes */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+}
+
+.gradient-neutral {
+  background: linear-gradient(135deg, var(--color-neutral-100), var(--color-neutral-200));
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Color Picker */
 .color-picker .react-colorful {
     width: 200px;
@@ -35,5 +90,16 @@
     min-width: 240px;
     width: 70%;
     margin: auto;
+}
+
+/* Hide spinner buttons on number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
   

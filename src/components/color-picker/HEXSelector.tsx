@@ -1,13 +1,13 @@
 import { useColor } from "../../constants/ColorProvider";
 import { rgbToHex } from "../../utils/colorUtils";
 import { useState, useEffect } from "react";
-import { CopySVG } from "../index";
+import { CopyButton } from "../index";
 
 const HEXSelector = () => {
     // ===============================================
     // State
     // ===============================================
-    const { color, setColor } = useColor();
+    const { color, setColor, theme } = useColor();
     const [hexValue, setHexValue] = useState(rgbToHex(color));
 
     // ===============================================
@@ -73,21 +73,34 @@ const HEXSelector = () => {
         }
     };
 
+    /**
+     * Copy to clipboard
+     */
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(hexValue);
+    }
+
     // ===============================================
     // Render
     // ===============================================
     return (
         <form onSubmit={handleSubmit}>
-            <div className="relative flex flex-row justify-between items-center gap-1 mt-5 px-2 py-[7px] border border-gray-300 rounded-md">
+            <div 
+                className="relative flex flex-row justify-between items-center gap-1 mt-5 px-2 py-[7px] border rounded-md"
+                style={{
+                    backgroundColor: theme === 'light' ? "var(--color-light-background)" : "var(--color-dark-background)",
+                    borderColor: theme === 'light' ? "var(--color-light-border)" : "var(--color-dark-border)",
+                }}
+            >
                 {/* Label */}
                 <label
                     htmlFor="hex"
-                    className="absolute -top-2 left-3 text-xs font-medium text-gray-700 px-1"
+                    className="absolute -top-2 left-3 text-xs font-medium px-1"
                     style={{
-                        backgroundColor: 'white'
+                        backgroundColor: theme === 'light' ? "var(--color-light-background)" : "var(--color-dark-background)",
+                        color: theme === 'light' ? "var(--color-light-text)" : "var(--color-dark-text)",
                     }}
                 >
-
                     HEX
                 </label>
 
@@ -101,14 +114,16 @@ const HEXSelector = () => {
                         onBlur={handleHexBlur}
                         placeholder="000000"
                         maxLength={6}
-                        className="text-xs w-32 px-1 uppercase outline-none"
+                        className="text-xs w-32 px-1 uppercase outline-none focus-ring"
+                        style={{
+                            backgroundColor: 'transparent',
+                            color: theme === 'light' ? "var(--color-light-text)" : "var(--color-dark-text)",
+                        }}
                     />
                 </div>
 
                 {/* Copy SVG */}
-                <button type="button" className="cursor-pointer hover:bg-gray-100 rounded-md p-0.5">
-                    <CopySVG height="20px" width="20px" />
-                </button>
+                <CopyButton onCopy={copyToClipboard} />
             </div>
         </form>
     );
