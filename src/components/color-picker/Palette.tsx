@@ -1,29 +1,32 @@
-import { HexAlphaColorPicker } from "react-colorful";
+import { HexColorPicker } from "react-colorful";
 import { useColor } from "../../constants/ColorProvider";
-import { useEffect } from "react";
-import { colorToString, randomizeColor } from "../../utils/colorUtils";
+import { rgbToHex } from "../../utils/colorUtils";
 
 const Palette = () => {
     // ===============================================
     // State
     // ===============================================
     const { color, setColor } = useColor();
-
-    // ===============================================
-    // Effects
-    // ===============================================
-
-    // Randomize color on mount
-    useEffect(() => {
-        setColor(randomizeColor());
-    }, []);
     
-
+    // ===============================================
+    // Handlers
+    // ===============================================
+    // Convert RGB to HEX for the HexColorPicker
+    const hexColor = rgbToHex(color);
+    
+    /**
+     * Handle color changes from the palette
+     * @param hexColor - The hex color to set
+     */
+    const handleColorChange = (hexColor: string) => {
+        setColor(hexColor);
+    };
+    
     return (
         <div className="color-picker">
-            <HexAlphaColorPicker
-                color={colorToString(color)}
-                onChange={setColor}
+            <HexColorPicker
+                color={hexColor}
+                onChange={handleColorChange}
             />
         </div>
     )

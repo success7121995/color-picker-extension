@@ -1,8 +1,14 @@
-export type RGBA = {
+export type RGB = {
     r: number;
     g: number;
     b: number;
-    a: number;
 }
 
 export type HEX = string;
+
+export type rgbaFormFields = {
+    name: keyof RGB;
+    label: string;
+    min: number;
+    max: number;
+}

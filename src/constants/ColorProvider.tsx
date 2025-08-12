@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import type { RGBA, HEX } from "../types/color";
-import { randomizeColor } from "../utils/colorUtils";
+import type { RGB, HEX } from "../types/color";
+import { randomizeColor, normalizeToRgb } from "../utils/colorUtils";
 
 interface ColorContextType {
-    color: RGBA | HEX;
-    setColor: (color: RGBA | HEX) => void;
+    color: RGB;
+    setColor: (color: RGB | HEX) => void;
 }
 
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
@@ -18,12 +18,19 @@ export const useColor = () => {
 }
 
 export const ColorProvider = ({ children }: { children: React.ReactNode }) => {
-    const [color, setColor] = useState<RGBA | HEX>(randomizeColor());
+    const [color, setColor] = useState<RGB>(() => {
+        const initialColor = randomizeColor();
+        return normalizeToRgb(initialColor);
+    });
+
+    const handleSetColor = (newColor: RGB | HEX) => {
+        setColor(normalizeToRgb(newColor));
+    };
 
     return (
         <ColorContext.Provider value={{
             color,
-            setColor,
+            setColor: handleSetColor,
         }}>
             {children}
         </ColorContext.Provider>
